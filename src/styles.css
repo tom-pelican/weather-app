@@ -1,0 +1,130 @@
+body {
+  background-color: black;
+}
+
+h1,
+h2,
+h3,
+ul {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+}
+
+h1 {
+  font-size: 3.5vw;
+  font-style: italic;
+  font-weight: 900;
+}
+
+h3 {
+  font-size: 1vw;
+  font-weight: 400;
+}
+
+ul {
+  font-size: 1.2vw;
+  font-weight: 400;
+  list-style: none;
+  padding: 0;
+}
+
+.temp-today,
+.celsius,
+.line,
+.fahrenheit {
+  font-size: 2.5vw;
+  font-family: "Montserrat", sans-serif;
+  color: white;
+}
+
+.temp-today {
+  font-weight: 700;
+}
+
+.celsius,
+.line,
+.fahrenheit {
+  font-weight: 400;
+}
+
+.line {
+  color: gray;
+}
+
+.selected {
+  color: white;
+}
+
+.disabled {
+  color: gray;
+}
+
+.celsius:hover,
+.fahrenheit:hover {
+  cursor: pointer;
+}
+
+.img-responsive {
+  max-width: 100%;
+  height: auto;
+}
+
+.today {
+  margin: 0 auto;
+  max-width: 70vw;
+  align-items: center;
+}
+
+.rest-of-week {
+  margin: 5vw auto;
+  max-width: 70vw;
+  text-align: center;
+}
+
+.search-form {
+  margin: 0 auto;
+  max-width: 60vw;
+}
+
+.search-input {
+  margin: 0 auto;
+  border-radius: 20px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+}
+
+.search-input:focus {
+  outline: none !important;
+  border-color: #f24405;
+  border-width: 1px;
+  box-shadow: 0 0 5px 2px #f24405;
+  transition: 1s;
+}
+
+.search-button {
+  margin: 0 auto;
+  border-radius: 20px;
+  background-color: white;
+  color: #f24405;
+}
+
+.search-button:hover {
+  border-color: #f24405;
+  background-color: #f24405;
+  box-shadow: 0 0 5px 2px #f24405;
+  color: white;
+  cursor: pointer;
+  transition: 200ms;
+}
+
+.current-location {
+  background-color: white;
+  border: none;
+  padding: 0 12px;
+  color: grey;
+  margin: 0 auto;
+}
+
+.current-location:hover {
+  color: #f24405;
+}
