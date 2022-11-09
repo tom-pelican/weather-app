@@ -32,9 +32,9 @@ h2 {
 }
 
 h3 {
+  text-align: center;
   font-size: 1vw;
   font-weight: 500;
-  align-items: center;
 }
 
 ul {
@@ -143,4 +143,11 @@ ul {
   color: white;
   cursor: pointer;
   transition: 200ms;
+}
+
+a {
+  color: white;
+}
+a:hover {
+  color: #f24405;
 }
