@@ -26,9 +26,15 @@ h1 {
   font-weight: 900;
 }
 
-h3 {
+h2 {
   font-size: 1vw;
   font-weight: 400;
+}
+
+h3 {
+  font-size: 1vw;
+  font-weight: 500;
+  align-items: center;
 }
 
 ul {
@@ -111,6 +117,18 @@ ul {
   transition: 1s;
 }
 
+.current-location {
+  background-color: white;
+  border: none;
+  padding: 0 12px;
+  color: grey;
+  margin: 0 auto;
+}
+
+.current-location:hover {
+  color: #f24405;
+}
+
 .search-button {
   margin: 0 auto;
   border-radius: 20px;
@@ -125,16 +143,4 @@ ul {
   color: white;
   cursor: pointer;
   transition: 200ms;
-}
-
-.current-location {
-  background-color: white;
-  border: none;
-  padding: 0 12px;
-  color: grey;
-  margin: 0 auto;
-}
-
-.current-location:hover {
-  color: #f24405;
 }
