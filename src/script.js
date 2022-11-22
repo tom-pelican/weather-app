@@ -47,6 +47,7 @@ dateElement.innerHTML = formattedDate;
 
 //search form
 function displayWeather(response) {
+  console.log(response);
   let rainElement = document.querySelector("#rain");
   if (response.data.rain) {
     let currentPrecip = response.data.rain["1h"];
