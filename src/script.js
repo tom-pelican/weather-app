@@ -56,6 +56,13 @@ function displayWeather(response) {
     rainElement.innerHTML = "0 mm";
   }
 
+  if (response.data.snow) {
+    let currentPrecip = response.data.snow["1h"];
+    rainElement.innerHTML = `${currentPrecip} mm`;
+  } else {
+    rainElement.innerHTML = "0 mm";
+  }
+
   const currentTemp = Math.round(response.data.main.temp);
   let tempTodayElement = document.querySelector("#temp-today");
   tempTodayElement.innerHTML = currentTemp;
@@ -71,6 +78,10 @@ function displayWeather(response) {
   let currentWind = response.data.wind.speed;
   let windElement = document.querySelector("#wind");
   windElement.innerHTML = `${currentWind} km/h`;
+
+  let currentIcon = response.data.weather[0].icon;
+  let iconElement = document.querySelector("#icon-0");
+  iconElement.setAttribute("src", `Images/Icon_${currentIcon}.svg`);
 }
 
 function search(event) {
