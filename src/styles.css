@@ -45,9 +45,9 @@ ul {
 }
 
 .temp-today,
-.celsius,
+.selected,
 .line,
-.fahrenheit {
+.disabled {
   font-size: 2.5vw;
   font-family: "Montserrat", sans-serif;
   color: white;
@@ -57,9 +57,9 @@ ul {
   font-weight: 700;
 }
 
-.celsius,
+.selected,
 .line,
-.fahrenheit {
+.disabled {
   font-weight: 400;
 }
 
@@ -75,8 +75,8 @@ ul {
   color: gray;
 }
 
-.celsius:hover,
-.fahrenheit:hover {
+.selected:hover,
+.disabled:hover {
   cursor: pointer;
 }
 

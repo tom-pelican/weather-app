@@ -63,7 +63,10 @@ function displayWeather(response) {
     rainElement.innerHTML = "0 mm";
   }
 
-  const currentTemp = Math.round(response.data.main.temp);
+  celciusTemperature = response.data.main.temp;
+  fahrenheitTemperature = celciusTemperature * 1.8 + 32;
+
+  const currentTemp = Math.round(celciusTemperature);
   let tempTodayElement = document.querySelector("#temp-today");
   tempTodayElement.innerHTML = currentTemp;
 
@@ -114,6 +117,9 @@ let searchFormElement = document.querySelector("#search-form");
 let searchButtonElement = document.querySelector("#search-button");
 let currentLocationElement = document.querySelector("#current-location");
 
+let celciusTemperature = null;
+let fahrenheitTemperature = null;
+
 searchFormElement.addEventListener("search", search);
 searchButtonElement.addEventListener("click", search);
 currentLocationElement.addEventListener("click", getCurrentLocation);
@@ -122,18 +128,15 @@ getCurrentLocation();
 
 //celsius or fahrenheit
 function changeToCelsius() {
-  celsiusElement.classList.remove("disabled");
-  celsiusElement.classList.add("selected");
-  fahrenheitElement.classList.remove("selected");
-  fahrenheitElement.classList.add("disabled");
+  tempTodayElement.innerHTML = Math.round(celciusTemperature);
+  celsiusElement.setAttribute("class", "selected");
+  fahrenheitElement.setAttribute("class", "disabled");
 }
 
 function changeToFahrenheit() {
-  tempTodayElement.innerHTML = Math.round(19 * 1.8 + 32);
-  fahrenheitElement.classList.remove("disabled");
-  fahrenheitElement.classList.add("selected");
-  celsiusElement.classList.remove("selected");
-  celsiusElement.classList.add("disabled");
+  tempTodayElement.innerHTML = Math.round(fahrenheitTemperature);
+  celsiusElement.setAttribute("class", "disabled");
+  fahrenheitElement.setAttribute("class", "selected");
 }
 
 let tempTodayElement = document.querySelector("#temp-today");
