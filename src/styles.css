@@ -91,7 +91,7 @@ ul {
   align-items: center;
 }
 
-.rest-of-week {
+.weather-forecast {
   margin: 5vw auto;
   max-width: 70vw;
   text-align: center;
@@ -143,6 +143,18 @@ ul {
   color: white;
   cursor: pointer;
   transition: 200ms;
+}
+
+.weather-forecast-date,
+.weather-forecast-temperatures {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  font-size: 1vw;
+  font-weight: 400;
+}
+
+.weather-forecast-temperature-max {
+  font-weight: 900;
 }
 
 a {

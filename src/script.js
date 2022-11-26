@@ -144,3 +144,36 @@ let celsiusElement = document.querySelector("#celcius");
 let fahrenheitElement = document.querySelector("#fahrenheit");
 celsiusElement.addEventListener("click", changeToCelsius);
 fahrenheitElement.addEventListener("click", changeToFahrenheit);
+
+//display the forecast
+function displayForecast() {
+  let forecastElement = document.querySelector("#weather-forecast");
+  let forecastHTML = "";
+
+  let days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  days.forEach(function (day) {
+    forecastHTML =
+      forecastHTML +
+      `
+  <div class="col-2">
+    <img class="img-responsive" src="Images/Icon_01d.svg" alt="Sunny" />
+    <div class="weather-forecast-date">${day}</div>
+    <div class="weather-forecast-temperatures">
+      <span class="weather-forecast-temperature-max">28°</span>
+      <span class="weather-forecast-temperature-min">20°</span>
+    </div>
+  </div>
+  `;
+  });
+
+  forecastElement.innerHTML = forecastHTML;
+}
+
+displayForecast();
