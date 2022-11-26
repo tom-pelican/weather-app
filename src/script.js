@@ -1,5 +1,5 @@
 //Datum
-function formatDatum(now) {
+function formatDate(now) {
   let days = [
     "Sunday",
     "Monday",
@@ -42,7 +42,7 @@ function formatDatum(now) {
 }
 
 let dateElement = document.querySelector("#current-date");
-let formattedDate = formatDatum(new Date());
+let formattedDate = formatDate(new Date());
 dateElement.innerHTML = formattedDate;
 
 //search form
@@ -55,6 +55,7 @@ function getForecast(coordinates) {
 
 function displayWeather(response) {
   let description = response.data.condition.description;
+  description = description.charAt(0).toUpperCase() + description.slice(1);
   let descriptionElement = document.querySelector("#description");
   descriptionElement.innerHTML = description;
 
@@ -116,6 +117,10 @@ let currentLocationElement = document.querySelector("#current-location");
 
 let celciusTemperature = null;
 let fahrenheitTemperature = null;
+let forecastTempCelMax = [];
+let forecastTempCelMin = [];
+let forecastTempFahrMax = [];
+let forecastTempFahrMin = [];
 
 searchFormElement.addEventListener("search", search);
 searchButtonElement.addEventListener("click", search);
@@ -123,17 +128,113 @@ currentLocationElement.addEventListener("click", getCurrentLocation);
 
 getCurrentLocation();
 
+//display the forecast
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  return days[day];
+}
+
+function displayForecast(response) {
+  forecastTempCelMax = [];
+  forecastTempCelMin = [];
+  forecastTempFahrMax = [];
+  forecastTempFahrMin = [];
+
+  let forecastElement = document.querySelector("#weather-forecast");
+  let forecastHTML = "";
+
+  let days = response.data.daily;
+
+  days.forEach(function (day, index) {
+    if (index > 0) {
+      forecastTempCelMax.push(Math.round(day.temperature.maximum));
+      forecastTempCelMin.push(Math.round(day.temperature.minimum));
+      forecastTempFahrMax.push(Math.round(day.temperature.maximum / 1.8 + 32));
+      forecastTempFahrMin.push(Math.round(day.temperature.minimum / 1.8 + 32));
+
+      forecastHTML =
+        forecastHTML +
+        `<div class="col-2">
+          <img class="img-responsive" src='Images/Icon_${
+            day.condition.icon
+          }.svg' alt="Sunny" />
+          <div class="weather-forecast-date">${formatDay(day.time)}</div>
+          <div class="weather-forecast-temperatures">
+            <span class="weather-forecast-temperature-max" id="tempmax${index}">${Math.round(
+          day.temperature.maximum
+        )}°</span>
+            <span class="weather-forecast-temperature-min" id="tempmin${index}">${Math.round(
+          day.temperature.minimum
+        )}°</span>
+          </div>
+        </div>`;
+    }
+  });
+
+  forecastElement.innerHTML = forecastHTML;
+}
+
 //celsius or fahrenheit
 function changeToCelsius() {
   tempTodayElement.innerHTML = Math.round(celciusTemperature);
   celsiusElement.setAttribute("class", "selected");
   fahrenheitElement.setAttribute("class", "disabled");
+
+  let maxTempForecastElements = document.getElementsByClassName(
+    "weather-forecast-temperature-max"
+  );
+  let minTempForecastElements = document.getElementsByClassName(
+    "weather-forecast-temperature-min"
+  );
+
+  Array.from(maxTempForecastElements).forEach(function changeMaxFahr(
+    day,
+    index
+  ) {
+    day.innerHTML = `${forecastTempCelMax[index]}°`;
+  });
+  Array.from(minTempForecastElements).forEach(function changeMinFahr(
+    day,
+    index
+  ) {
+    day.innerHTML = `${forecastTempCelMin[index]}°`;
+  });
 }
 
 function changeToFahrenheit() {
   tempTodayElement.innerHTML = Math.round(fahrenheitTemperature);
   celsiusElement.setAttribute("class", "disabled");
   fahrenheitElement.setAttribute("class", "selected");
+
+  let maxTempForecastElements = document.getElementsByClassName(
+    "weather-forecast-temperature-max"
+  );
+  let minTempForecastElements = document.getElementsByClassName(
+    "weather-forecast-temperature-min"
+  );
+
+  Array.from(maxTempForecastElements).forEach(function changeMaxFahr(
+    day,
+    index
+  ) {
+    day.innerHTML = `${forecastTempFahrMax[index]}°`;
+  });
+  Array.from(minTempForecastElements).forEach(function changeMinFahr(
+    day,
+    index
+  ) {
+    day.innerHTML = `${forecastTempFahrMin[index]}°`;
+  });
 }
 
 let tempTodayElement = document.querySelector("#temp-today");
@@ -141,36 +242,3 @@ let celsiusElement = document.querySelector("#celcius");
 let fahrenheitElement = document.querySelector("#fahrenheit");
 celsiusElement.addEventListener("click", changeToCelsius);
 fahrenheitElement.addEventListener("click", changeToFahrenheit);
-
-//display the forecast
-function displayForecast(response) {
-  console.log(response);
-
-  let forecastElement = document.querySelector("#weather-forecast");
-  let forecastHTML = "";
-
-  let days = response.data.daily;
-
-  days.forEach(function (day) {
-    forecastHTML =
-      forecastHTML +
-      `
-  <div class="col-2">
-    <img class="img-responsive" src='Images/Icon_${
-      day.condition.icon
-    }.svg' alt="Sunny" />
-    <div class="weather-forecast-date">${day}</div>
-    <div class="weather-forecast-temperatures">
-      <span class="weather-forecast-temperature-max">${Math.round(
-        day.temperature.maximum
-      )}°</span>
-      <span class="weather-forecast-temperature-min">${Math.round(
-        day.temperature.minimum
-      )}°</span>
-    </div>
-  </div>
-  `;
-  });
-
-  forecastElement.innerHTML = forecastHTML;
-}
