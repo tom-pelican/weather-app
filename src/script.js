@@ -46,51 +46,48 @@ let formattedDate = formatDatum(new Date());
 dateElement.innerHTML = formattedDate;
 
 //search form
+function getForecast(coordinates) {
+  let lat = coordinates.latitude;
+  let lon = coordinates.longitude;
+  let apiUrl = `${apiEndpoint}forecast?lat=${lat}&lon=${lon}&key=${apiKey}&units=${unit}`;
+  axios.get(apiUrl).then(displayForecast);
+}
+
 function displayWeather(response) {
-  console.log(response);
-  let rainElement = document.querySelector("#rain");
-  if (response.data.rain) {
-    let currentPrecip = response.data.rain["1h"];
-    rainElement.innerHTML = `${currentPrecip} mm`;
-  } else {
-    rainElement.innerHTML = "0 mm";
-  }
+  let description = response.data.condition.description;
+  let descriptionElement = document.querySelector("#description");
+  descriptionElement.innerHTML = description;
 
-  if (response.data.snow) {
-    let currentPrecip = response.data.snow["1h"];
-    rainElement.innerHTML = `${currentPrecip} mm`;
-  } else {
-    rainElement.innerHTML = "0 mm";
-  }
-
-  celciusTemperature = response.data.main.temp;
+  celciusTemperature = response.data.temperature.current;
   fahrenheitTemperature = celciusTemperature * 1.8 + 32;
 
-  const currentTemp = Math.round(celciusTemperature);
+  let currentTemp = Math.round(celciusTemperature);
   let tempTodayElement = document.querySelector("#temp-today");
   tempTodayElement.innerHTML = currentTemp;
 
-  let city = response.data.name;
+  let city = response.data.city;
   let cityElement = document.querySelector("#city");
   cityElement.innerHTML = city;
 
-  let currentHum = response.data.main.humidity;
+  let currentHum = response.data.temperature.humidity;
   let humidityElement = document.querySelector("#humidity");
   humidityElement.innerHTML = `${currentHum}%`;
 
-  let currentWind = response.data.wind.speed;
+  let currentWind = Math.round(response.data.wind.speed);
   let windElement = document.querySelector("#wind");
   windElement.innerHTML = `${currentWind} km/h`;
 
-  let currentIcon = response.data.weather[0].icon;
+  let currentIcon = response.data.condition.icon;
   let iconElement = document.querySelector("#icon-0");
   iconElement.setAttribute("src", `Images/Icon_${currentIcon}.svg`);
+
+  getForecast(response.data.coordinates);
 }
 
 function search(event) {
   event.preventDefault();
-  let searchInput = document.querySelector("#search-input").value;
-  let apiUrl = `${apiEndpoint}?q=${searchInput}&appid=${apiKey}&units=${unit}`;
+  searchInput = document.querySelector("#search-input").value;
+  let apiUrl = `${apiEndpoint}current?query=${searchInput}&key=${apiKey}&units=${unit}`;
   if (searchInput) {
     axios.get(apiUrl).then(displayWeather);
   } else {
@@ -101,7 +98,7 @@ function search(event) {
 function myLocation(location) {
   let lat = location.coords.latitude;
   let lon = location.coords.longitude;
-  let apiUrl = `${apiEndpoint}?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${unit}`;
+  let apiUrl = `${apiEndpoint}current?lon=${lon}&lat=${lat}&key=${apiKey}&units=${unit}`;
   axios.get(apiUrl).then(displayWeather);
 }
 
@@ -109,8 +106,8 @@ function getCurrentLocation() {
   navigator.geolocation.getCurrentPosition(myLocation);
 }
 
-let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";
-let apiKey = "f09d3949047ab6c9e3bcaf79cf61f619";
+let apiEndpoint = "https://api.shecodes.io/weather/v1/";
+let apiKey = "7ctdc077a2e3a3ado6fe94bb8949bd5b";
 let unit = "metric";
 
 let searchFormElement = document.querySelector("#search-form");
@@ -146,28 +143,30 @@ celsiusElement.addEventListener("click", changeToCelsius);
 fahrenheitElement.addEventListener("click", changeToFahrenheit);
 
 //display the forecast
-function displayForecast() {
+function displayForecast(response) {
+  console.log(response);
+
   let forecastElement = document.querySelector("#weather-forecast");
   let forecastHTML = "";
 
-  let days = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
+  let days = response.data.daily;
+
   days.forEach(function (day) {
     forecastHTML =
       forecastHTML +
       `
   <div class="col-2">
-    <img class="img-responsive" src="Images/Icon_01d.svg" alt="Sunny" />
+    <img class="img-responsive" src='Images/Icon_${
+      day.condition.icon
+    }.svg' alt="Sunny" />
     <div class="weather-forecast-date">${day}</div>
     <div class="weather-forecast-temperatures">
-      <span class="weather-forecast-temperature-max">28°</span>
-      <span class="weather-forecast-temperature-min">20°</span>
+      <span class="weather-forecast-temperature-max">${Math.round(
+        day.temperature.maximum
+      )}°</span>
+      <span class="weather-forecast-temperature-min">${Math.round(
+        day.temperature.minimum
+      )}°</span>
     </div>
   </div>
   `;
@@ -175,5 +174,3 @@ function displayForecast() {
 
   forecastElement.innerHTML = forecastHTML;
 }
-
-displayForecast();
