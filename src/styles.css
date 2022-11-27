@@ -12,6 +12,10 @@ body {
   margin: 0;
 }
 
+.weather-app {
+  margin-top: 20px;
+}
+
 h1,
 h2,
 h3,
@@ -81,7 +85,7 @@ ul {
 }
 
 .img-responsive {
-  max-width: 100%;
+  max-width: 90%;
   height: auto;
 }
 

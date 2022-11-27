@@ -54,6 +54,7 @@ function getForecast(coordinates) {
 }
 
 function displayWeather(response) {
+  console.log(response);
   let description = response.data.condition.description;
   description = description.charAt(0).toUpperCase() + description.slice(1);
   let descriptionElement = document.querySelector("#description");
@@ -79,8 +80,12 @@ function displayWeather(response) {
   windElement.innerHTML = `${currentWind} km/h`;
 
   let currentIcon = response.data.condition.icon;
-  let iconElement = document.querySelector("#icon-0");
+  let iconElement = document.querySelector("#icon");
   iconElement.setAttribute("src", `Images/Icon_${currentIcon}.svg`);
+  iconElement.setAttribute("alt", currentIcon);
+
+  celsiusElement.setAttribute("class", "selected");
+  fahrenheitElement.setAttribute("class", "disabled");
 
   getForecast(response.data.coordinates);
 }
